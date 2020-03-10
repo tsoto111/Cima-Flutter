@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:geolocator/geolocator.dart';
+import '../services/location.dart';
 
 class LoadingScreen extends StatefulWidget {
   @override
@@ -18,17 +18,10 @@ class _LoadingScreenState extends State<LoadingScreen> {
   // [Tavo] - We have to tell this function that it is going to be asynchronous
   // by adding `async` key word after the function's definition...
   void getLocation() async {
-    try {
-      // [Tavo] - We know that the Geolocator() function call is asynchronous because it
-      // uses the `await` key word before its usage...
-      Position position = await Geolocator().getCurrentPosition(
-        desiredAccuracy: LocationAccuracy
-            .low, // low, to use a minimal amount of device resources
-      );
-      print(position);
-    } catch (error) {
-      print(error);
-    }
+    Location currentLocation = new Location();
+    await currentLocation.getCurrentLocation();
+    print(currentLocation.latitude);
+    print(currentLocation.longitude);
   }
 
   // [Tavo] Build gets called every time the screen gets rebuilt...
