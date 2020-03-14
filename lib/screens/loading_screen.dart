@@ -1,10 +1,7 @@
 import 'package:flutter/material.dart';
-import '../services/location.dart';
-import 'package:clima/services/networking.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'location_screen.dart';
-
-const apiKey = '8166d2071f21e28191224c569a1af373';
+import 'package:clima/services/weather.dart';
 
 class LoadingScreen extends StatefulWidget {
   @override
@@ -26,13 +23,8 @@ class _LoadingScreenState extends State<LoadingScreen> {
   // [Tavo] - We have to tell this function that it is going to be asynchronous
   // by adding `async` key word after the function's definition...
   void getLocationData() async {
-    Location currentLocation = new Location();
-    await currentLocation.getCurrentLocation();
-    NetworkHelper networkHelper = new NetworkHelper(
-        'https://api.openweathermap.org/data/2.5/weather?units=metric&lat=${currentLocation.latitude}&lon=${currentLocation.longitude}&appid=$apiKey');
+    var weatherData = await WeatherModel().getLocationWeather();
 
-    // Get Data from api response
-    var weatherData = await networkHelper.getData();
     Navigator.push(context, MaterialPageRoute(builder: (context) {
       return LocationScreen(
         locationWeather: weatherData,
